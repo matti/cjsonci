@@ -26,4 +26,14 @@ RSpec.describe CJSONCI do
     servant_k.kill
     expect(got_olleh).to be_truthy
   end
+
+  it do
+    input = {
+      eval: "'hello'.reverse"
+    }
+
+    client_k = Kommando.new "ruby e2e/client.rb", output: true
+    client_k.run
+    expect(client_k.out).to eq "2\r\n"
+  end
 end

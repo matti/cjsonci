@@ -7,6 +7,7 @@ module CJSONCI
       @stdin, @stdout, @stderr, @wait_thr = Open3.popen3(cmd)
       @queue = Queue.new
 
+      # consider something like https://github.com/kontena/kontena/blob/edb1d6c40e1ceb1b5aae88501d35cda525b64339/cli/lib/kontena/cli/helpers/exec_helper.rb#L38-L51
       Thread.new do
         @stdout.each_line do |line|
           @queue.push JSON.parse(line)
@@ -21,9 +22,7 @@ module CJSONCI
       @stdin.puts input.to_json
       result = nil
       begin
-        puts "BLO"
         result = @queue.pop
-        puts "COK"
       rescue Exception => ex
         @stderr.each_line do |line|
           puts line
@@ -31,7 +30,6 @@ module CJSONCI
         exit 1
       end
 
-      puts "GOT"
       result
     end
 
