@@ -39,6 +39,18 @@ module CJSONCI
       rescue Exception => ex
         eval_result = ex
       end
+
+      case eval_result.class.name
+      when "SignalException"
+        case eval_result.message
+        when "SIGTERM"
+          exit 0
+        end
+      when "SystemExit"
+        exit 0
+      end
+
+      eval_result
     end
 
     def self.format_message(result)
